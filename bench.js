@@ -95,7 +95,7 @@ const bench = () => {
       let hashes = [];
 
       // Generate md5 hashes.
-      for (let i = 0; i < 5000000; i += 1) {
+      for (let i = 0; i < 2500000; i += 1) {
         hashes.push(crypto.createHash('sha256').update(`${i}`).digest('hex'));
       }
 

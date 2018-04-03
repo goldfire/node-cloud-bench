@@ -48,7 +48,7 @@ Sample output:
 | Mon Apr 02 2018 21:35:05 GMT-0500 (CDT) | 32 | 28 | 49 | 11 | 23.387 | 37936 | 18428 |15.4us |
 | ... |
 
-If you are running these tests on a remote machine, it is recommend to pair it with something like [forever](https://github.com/nodejitsu/forever) to turn the test into a daemon.
+If you are running these tests on a remote machine, it is recommended to pair it with something like [forever](https://github.com/nodejitsu/forever) to turn the test into a daemon.
 
 ## License
 
