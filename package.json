@@ -1,0 +1,32 @@
+{
+  "name": "cloud-bench",
+  "description": "CLI to benchmark the CPU, network and disk performance of cloud servers over time.",
+  "homepage": "https://github.com/goldfire/node-cloud-bench",
+  "keywords": [
+    "cloud",
+    "performance",
+    "vps",
+    "ec2",
+    "aws",
+    "server benchmark",
+    "benchmark",
+    "cloud benchmark",
+    "bench"
+  ],
+  "author": "James Simpson <james@goldfirestudios.com> (http://goldfirestudios.com)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/goldfire/node-cloud-bench.git"
+  },
+  "main": "bench.js",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "colors": ">0.0.1",
+    "nomnom": ">0.0.1",
+    "speed-test": "2.0.0"
+  },
+  "engines": [
+    "node >= 6.4.0"
+  ]
+}
