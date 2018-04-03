@@ -2,7 +2,7 @@
   "name": "cloud-bench",
   "description": "CLI to benchmark the CPU, network and disk performance of cloud servers over time.",
   "homepage": "https://github.com/goldfire/node-cloud-bench",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": [
     "cloud",
     "performance",

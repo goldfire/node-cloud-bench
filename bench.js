@@ -24,7 +24,7 @@ if (!interval || !limit || !out) {
 }
 
 // Create the empty output file.
-fs.writeFileSync(out, 'Time,Ping,Download,Upload,CPU Time,Read IOPS,Write IOPS,IO Ping');
+fs.writeFileSync(out, 'Time,Download (CDN),Ping,Download,Upload,CPU Time,Read IOPS,Write IOPS,IO Ping');
 
 // Get the high resolution time.
 const now = () => {
@@ -45,8 +45,37 @@ const bench = () => {
 
   let output = fs.readFileSync(out, 'utf-8') + '\n' + new Date();
 
+  // Execute the download benchmark (uses various CDN tests).
+  const netBench1 = () => {
+    let total = 0;
+    const urls = [
+      'http://cachefly.cachefly.net/100mb.test',
+      'http://mirror.nl.leaseweb.net/speedtest/100mb.bin',
+      'http://speedtest.dal01.softlayer.com/downloads/test100.zip',
+      'http://ping.online.net/100Mo.dat',
+      'http://proof.ovh.ca/files/100Mio.dat',
+    ];
+
+    return Promise.all(urls.map((url) => {
+      return new Promise((resolve) => {
+        exec(`curl --max-time 10 -so /dev/null -w '%{speed_download}\n' '${url}'`, (err, stdout) => {
+          total += parseFloat(stdout) / 1024 / 1024;
+
+          setTimeout(resolve, 5000);
+        });
+      });
+    })).then(() => {
+      // Update the values in the data.
+      output += `,${total / urls.length}`;
+
+      return new Promise((resolve) => {
+        setTimeout(resolve, delay);
+      });
+    });
+  };
+
   // Execute the network benchmark (uses speedtest.net for ping, download & upload).
-  const netBench = () => {
+  const netBench2 = () => {
     return new Promise((resolve) => {
       exec('node speed-test/cli -j', (err, stdout) => {
         const {ping, download, upload} = JSON.parse(stdout);
@@ -146,7 +175,8 @@ const bench = () => {
     fs.writeFileSync(out, output);
   };
 
-  netBench()
+  netBench1()
+    .then(netBench2)
     .then(cpuBench)
     .then(diskReadBench)
     .then(diskWriteBench)

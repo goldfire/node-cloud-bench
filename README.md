@@ -3,6 +3,7 @@ node-cloud-bench is a small CLI utility written with Node.js that allows for eas
 
 The results collected include:
 
+* Network CDN Download (Mbps)
 * Network Ping (seconds)
 * Network Download (Mbps)
 * Network Upload (Mbps)
@@ -42,9 +43,9 @@ node cloud-bench \
 
 Sample output:
 
-| Time | Ping | Download | Upload | CPU Time | Read IOPS | Write IOPS | IO Ping |
+| Time | Download (CDN) | Ping | Download | Upload | CPU Time | Read IOPS | Write IOPS | IO Ping |
 | ---- | ---- | -------- | ------ | -------- | --------- | ---------- | ------- |
-| Mon Apr 02 2018 21:35:05 GMT-0500 (CDT) | 28 | 49 | 11 | 23.387 | 37936 | 18428 |15.4us |
+| Mon Apr 02 2018 21:35:05 GMT-0500 (CDT) | 32 | 28 | 49 | 11 | 23.387 | 37936 | 18428 |15.4us |
 | ... |
 
 If you are running these tests on a remote machine, it is recommend to pair it with something like [forever](https://github.com/nodejitsu/forever) to turn the test into a daemon.
