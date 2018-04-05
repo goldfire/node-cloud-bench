@@ -77,8 +77,7 @@ const bench = () => {
   // Execute the network benchmark (uses speedtest.net for ping, download & upload).
   const netBench2 = () => {
     return new Promise((resolve) => {
-      exec('node node-cloud-bench/node_modules/speed-test/cli -j', (err, stdout) => {
-      // exec('node speed-test/cli -j', (err, stdout) => {
+      exec('node speed-test/cli -j', (err, stdout) => {
         const {ping, download, upload} = JSON.parse(stdout);
 
         // Update the values in the data.
