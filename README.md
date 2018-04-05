@@ -29,6 +29,7 @@ This script makes use of the following dependencies that you may need to install
 node cloud-bench \
     --interval [seconds between tests] \
     --limit [number of iterations] \
+    --nodisk
     --out [output filename]
 ```
 

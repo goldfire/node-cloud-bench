@@ -12,14 +12,14 @@ const fs = require('fs');
 const crypto = require('crypto');
 const {exec} = require('child_process');
 const colors = require('colors');
-const opts = require('nomnom').parse();
+const opts = require('nomnom').option('nodisk', {flag: true}).parse();
 
 // Check the usage.
-const {interval, limit, out} = opts;
+const {interval, limit, out, nodisk} = opts;
 const isMac = process.platform === 'darwin';
 const delay = 3000;
 if (!interval || !limit || !out) {
-  console.log("Usage: node cloud-bench --interval [seconds] --limit [number] --out [output file]".yellow.bold);
+  console.log("Usage: node cloud-bench --interval [seconds] --limit [number] [--nodisk] --out [output file]".yellow.bold);
   return;
 }
 
@@ -77,7 +77,8 @@ const bench = () => {
   // Execute the network benchmark (uses speedtest.net for ping, download & upload).
   const netBench2 = () => {
     return new Promise((resolve) => {
-      exec('node speed-test/cli -j', (err, stdout) => {
+      exec('node node-cloud-bench/node_modules/speed-test/cli -j', (err, stdout) => {
+      // exec('node speed-test/cli -j', (err, stdout) => {
         const {ping, download, upload} = JSON.parse(stdout);
 
         // Update the values in the data.
@@ -130,6 +131,11 @@ const bench = () => {
 
   // Execute the disk IO benchmark (random read with fio).
   const diskReadBench = () => {
+    if (nodisk) {
+      output += ',N/A';
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
       exec(`fio --name=randread --ioengine=${isMac ? 'posixaio' : 'libaio'} --direct=1 --bs=4k --iodepth=64 --size=4G --rw=randread --gtod_reduce=1 --output-format=json`, (err, stdout) => {
         const {iops} = JSON.parse(stdout).jobs[0].read;
@@ -144,6 +150,11 @@ const bench = () => {
 
   // Execute the disk IO benchmark (random write with fio).
   const diskWriteBench = () => {
+    if (nodisk) {
+      output += ',N/A';
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
       exec(`fio --name=randwrite --ioengine=${isMac ? 'posixaio' : 'libaio'} --direct=1 --bs=4k --iodepth=64 --size=4G --rw=randwrite --gtod_reduce=1 --output-format=json`, (err, stdout) => {
         const {iops} = JSON.parse(stdout).jobs[0].write;
@@ -158,6 +169,11 @@ const bench = () => {
 
   // Execute the disk ping benchmark (using ioping).
   const diskPingBench = () => {
+    if (nodisk) {
+      output += ',N/A';
+      return Promise.resolve();
+    }
+
     return new Promise((resolve) => {
       exec('ioping -c 10 .', (err, stdout) => {
         const parsed = new RegExp(/ \/\s(.+?)\s\/ /g).exec(stdout);
