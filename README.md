@@ -45,9 +45,8 @@ node cloud-bench \
 Sample output:
 
 | Time | Download (CDN) | Ping | Download | Upload | CPU Time | Read IOPS | Write IOPS | IO Ping |
-| ---- | ---- | -------- | ------ | -------- | --------- | ---------- | ------- |
+| ----- | ---------------- | ----- | ---------- | ------- | ---------- | ----------- | ---------- | --------|
 | Mon Apr 02 2018 21:35:05 GMT-0500 (CDT) | 32 | 28 | 49 | 11 | 23.387 | 37936 | 18428 |15.4us |
-| ... |
 
 If you are running these tests on a remote machine, it is recommended to pair it with something like [forever](https://github.com/nodejitsu/forever) to turn the test into a daemon.
 
