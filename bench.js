@@ -49,11 +49,11 @@ const bench = () => {
   const netBench1 = () => {
     let total = 0;
     const urls = [
-      'http://cachefly.cachefly.net/100mb.test',
-      'http://mirror.nl.leaseweb.net/speedtest/100mb.bin',
-      'http://speedtest.dal01.softlayer.com/downloads/test100.zip',
-      'http://ping.online.net/100Mo.dat',
-      'http://proof.ovh.ca/files/100Mio.dat',
+      'https://cachefly.cachefly.net/100mb.test',
+      'https://mirror.nl.leaseweb.net/speedtest/100mb.bin',
+      'https://speed.hetzner.de/100MB.bin',
+      'https://ping.online.net/100Mo.dat',
+      'https://proof.ovh.net/files/100Mb.dat',
     ];
 
     return Promise.all(urls.map((url) => {
