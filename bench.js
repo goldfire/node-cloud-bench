@@ -13,6 +13,13 @@ const crypto = require('crypto');
 const {exec} = require('child_process');
 const colors = require('colors');
 const opts = require('nomnom').option('nodisk', {flag: true}).parse();
+const {UniversalSpeedtest, SpeedUnits} = require('universal-speedtest');
+
+// Prep the speed test.
+const universalSpeedtest = new UniversalSpeedtest({
+  measureUpload: true,
+  downloadUnit: SpeedUnits.MBps,
+});
 
 // Check the usage.
 const {interval, limit, out, nodisk} = opts;
@@ -36,12 +43,12 @@ const now = () => {
 let total = 0;
 const bench = () => {
   // Check if we've reached the limit.
-  total += 1;
-  if (total > limit) {
+  if (total >= limit) {
     console.log("WIN - Benchmark complete!".green.bold);
     process.exit();
     return;
   }
+  total += 1;
 
   let output = fs.readFileSync(out, 'utf-8') + '\n' + new Date();
 
@@ -77,11 +84,11 @@ const bench = () => {
   // Execute the network benchmark (uses speedtest.net for ping, download & upload).
   const netBench2 = () => {
     return new Promise((resolve) => {
-      exec('node speed-test/cli -j', (err, stdout) => {
-        const {ping, download, upload} = JSON.parse(stdout);
+      universalSpeedtest.runCloudflareCom().then((result) => {
+        const {ping, downloadSpeed, uploadSpeed} = result;
 
         // Update the values in the data.
-        output += `,${ping},${download},${upload}`;
+        output += `,${ping},${downloadSpeed},${uploadSpeed}`;
 
         setTimeout(resolve, delay);
       });
